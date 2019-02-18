@@ -29,6 +29,8 @@ or implied, of Rafael Muñoz Salinas.
 */
 #include <aruco/arucofidmarkers.h>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <algorithm>
+#include <random>
 using namespace cv;
 using namespace std;
 namespace aruco {
@@ -437,7 +439,8 @@ namespace aruco {
       for (size_t i=0;i<excluded->size();++i)
         listOfMarkers[excluded->at(i)]=-1;
     //random shuffle
-    random_shuffle(listOfMarkers.begin(),listOfMarkers.end());
+    auto rng = std::default_random_engine {};
+    std::shuffle(listOfMarkers.begin(),listOfMarkers.end(), rng);
     //now, take the first  nMarkers elements with value !=-1
     int i=0;
     vector<int> retList;

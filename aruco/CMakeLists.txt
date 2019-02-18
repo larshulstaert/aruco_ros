@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(aruco)
 
+add_compile_options(/Od)
+
+add_compile_options(/std:c++latest)
+
+add_compile_options(/await)
+
 find_package(catkin)
 
 find_package(OpenCV 3 REQUIRED)
@@ -41,7 +47,7 @@ install(TARGETS aruco optimalmarkers
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-install(DIRECTORY include/
+install(DIRECTORY include
    DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
    FILES_MATCHING PATTERN "*.h"
 )
