@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(aruco_ros)
 
 find_package(OpenCV REQUIRED)
+find_package(aruco REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
@@ -33,7 +34,7 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 add_library(aruco_ros_utils src/aruco_ros_utils.cpp)
-target_link_libraries(aruco_ros_utils ${catkin_LIBRARIES})
+target_link_libraries(aruco_ros_utils ${catkin_LIBRARIES} aruco)
 
 add_executable(single src/simple_single.cpp
                       src/aruco_ros_utils.cpp)
@@ -47,8 +48,8 @@ target_link_libraries(double ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(marker_publisher src/marker_publish.cpp
                                 src/aruco_ros_utils.cpp)
-add_dependencies(marker_publisher ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
-target_link_libraries(marker_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(marker_publisher ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS} aruco_ros_utils)
+target_link_libraries(marker_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${aruco_LIBRARIES})
 
 #############
 ## Install ##
@@ -70,3 +71,4 @@ foreach(dir etc launch)
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
 endforeach(dir)
 
+set_target_properties(marker_publisher PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)  
